@@ -30,5 +30,3 @@ Each time you enter "load_vigra_c" to load the shared library of the c-wrapper, 
 -----------------------------------
 Open MatLab and change the current directory to the vigramatlab directory.
 Double-click on the examples.m script and look how it calls the vigramatlab functions.
-
-3. 
