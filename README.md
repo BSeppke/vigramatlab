@@ -17,19 +17,30 @@ Each time you enter "load_vigra_c" to load the shared library of the c-wrapper, 
 If you encounter error messages, like:
 
 > Error using loadlibrary
+
 > There was an error loading the library
+
 > "/Users/seppke/development/vigramatlab/libvigra_c.dylib"
+
 > dlopen(/Users/seppke/development/vigramatlab/libvigra_c.dylib, 6): Library not loaded:
+
 >   /opt/local/lib/libtiff.5.dylib
+
 > Referenced from: /Users/seppke/development/vigramatlab/libvigra_c.dylib
+
 > Reason: Incompatible library version: libvigra_c.dylib requires version 8.0.0 or later, but
+
 >   libtiff.5.dylib provides version 6.0.0
 
 this is due to the fact, that MatLab brings with its own type of (older) libtiff library and puts this one into the DYLD_LIBRARY_PARTH. Inside the folder 
 > /Applications/MATLAB_R2015b.app/bin/maci64 
+
 MatLab keeps its own libtiff.5.dylib and is not willing to use other libs. However, you may convince MatLab by exchanging the libtiff with the newer one. This worked for me:
+
 > cd /Applications/MATLAB_R2015b.app/bin/maci64 
+
 > mv libtiff.5.dylib libtiff.5.orig.dylib
+
 > cp /opt/local/lib/libtiff.5.dylib .
 
 
