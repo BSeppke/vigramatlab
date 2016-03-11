@@ -33,14 +33,12 @@ function path = dylib_path()
   path = [vigramatlab_path() , dylib_file()];
 end
 
-function platform_string = build_platform()
+function flags = cmake_flags()
 
-    if( ismac() )
-        platform_string = ['macosx' , matlab_bits()];
-    elseif ( isunix() )
-        platform_string = ['unix'  ,  matlab_bits()];
+    if( matlab_bits() == 32)
+        flags = '-DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32';
     else
-        error('Error: Only macosx and unix are supported for auto-build of vigra_c')
+        flags = '';
     end
 end
 
@@ -75,10 +73,11 @@ function installed = vigra_installed()
 end
 
 function result = build_vigra_c()
+    system_env(['cat ' , vigra_c_path() , 'src/vigra_*.h | grep -v ^#include | sed -e "s/LIBEXPORT//"> libvigra_c.h'])
     if( isunix() )
         if( vigra_installed() == 0)
             display ('-------------- BUILDING VIGRA-C-WRAPPER FOR COMPUTER VISION AND IMAGE PROCESSING TASKS --------------')
-            if( system_env(['cd ' , vigra_c_path() , '&& make ' , build_platform()]) == 0)
+            if( system_env(['cd ' , vigra_c_path() , '&& mkdir -p build && cd build && cmake ' , cmake_flags(), ' .. && make && cd .. && rm -rf ./build']) == 0)
                 result = copyfile([vigra_c_path() , 'bin/' , dylib_file()], dylib_path(), 'f');
             else
                 error('making the vigra_c lib failed, although vigra seems to be installed')
