@@ -88,7 +88,6 @@ function result = build_vigra_c()
     elseif( ispc() )
         bindir = [vigra_c_path() , 'bin/' , 'win' , idl_bits() , '/'];
         result = system(['copy ' , bindir , '*.dll ' , vigraidl_path()]);
-        result = system(['copy ' , vigraidl_path() , 'zlib.dll ' , vigraidl_path() , '/zlibwapi.dll']);
     else
         error('Only Mac OS X, Unix and Windows are supported for auto build of vigra_c!')
     end
