@@ -67,15 +67,35 @@ function result = system_env( arg )
     result = system([login_cmd() , ' && ' , arg]);
 end
 
+function version = vigra_version()
+    [status, version_string] = system([login_cmd() , ' && vigra-config --version']);
+    disp(version_string);
+    if (status == 0)
+        version = str2double(strsplit(version_string, '.'));
+    else
+        version = [];
+    end
+end
+
 function installed = vigra_installed()
-    display('Searching for vigra using <vigra-config --version>')
-    installed = system_env('vigra-config --version');
+    display('Searching for vigra >= 1.11.0 using <vigra-config --version>')
+    version = vigra_version();
+    
+    if(length(version) == 3)
+        if( ((version(1) == 1) && (version(2) >= 11)) || (version(1) > 1))
+            installed = 1;
+        else
+            installed = 0;
+        end
+    else
+        installed = 0;
+    end
 end
 
 function result = build_vigra_c()
-    system_env(['cat ' , vigra_c_path() , 'src/vigra_*.h | grep -v ^#include | sed -e "s/LIBEXPORT//"> libvigra_c.h'])
+    system_env(['cat ' , vigra_c_path() , 'src/vigra_*.h | grep -v ^#include | grep -v "^#ifndef VIGRA" | grep -v "^#define VIGRA" | grep -v ^#endif | sed -e "s/LIBEXPORT//" | sed -e "s/PixelType/float/g" > libvigra_c.h'])
     if( isunix() )
-        if( vigra_installed() == 0)
+        if( vigra_installed() == 1)
             display ('-------------- BUILDING VIGRA-C-WRAPPER FOR COMPUTER VISION AND IMAGE PROCESSING TASKS --------------')
             if( system_env(['cd ' , vigra_c_path() , '&& mkdir -p build && cd build && cmake ' , cmake_flags(), ' .. && make && cd .. && rm -rf ./build']) == 0)
                 result = copyfile([vigra_c_path() , 'bin/' , dylib_file()], dylib_path(), 'f');
