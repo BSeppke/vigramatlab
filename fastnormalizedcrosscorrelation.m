@@ -36,9 +36,12 @@ function correlation_band = fastnormalizedcrosscorrelation_band(image_band, mask
     
     result = calllib('libvigra_c','vigra_fastnormalizedcrosscorrelation_c', ptr, mask_ptr, correlation_ptr, w,h,  mask_w, mask_h);
     
-    if(result == 0)
-        correlation_band = correlation_ptr.Value';
-    else
-        error('Error in vigramatlab.imgproc:fastnormalizedcrosscorrelation: Fast normalized cross-correlation failed!')
+    switch result
+        case 0
+            correlation_band = correlation_ptr.Value';
+        case 1
+            error('Error in vigramatlab.imgproc:fastnormalizedcrosscorrelation: Fast normalized cross-correlation failed!')
+        case 2
+            error('Error in vigramatlab.imgproc:fastnormalizedcrosscorrelation: Mask needs to be of odd size!')
     end
 end

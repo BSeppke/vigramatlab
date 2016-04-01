@@ -11,6 +11,15 @@ tic
 img = gaussiansmoothing(img, 0.3);
 toc
 
+
+display( 'testing subimage and correlation facilities')
+img_cut = subimage(img, 100, 50, 151, 101); % Mask needs to have odd size!
+
+fcc_res = fastcrosscorrelation(img, img_cut);
+fncc_res = fastnormalizedcrosscorrelation(img, img_cut);
+pos_matches = localmaxima(fncc_res);
+neg_matches = localminima(fncc_res);
+
 display( 'performing watershed transform on resized gradient image')
 img_ggm = gaussiangradient(resizeimage(img, 2*shape(1), 2*shape(2),  4),  1.0);
 img2 = regionimagetocrackedgeimage( labelimage(watersheds(img_ggm)), 0.0);
