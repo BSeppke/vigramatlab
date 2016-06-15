@@ -36,9 +36,9 @@ end
 function flags = cmake_flags()
 
     if( matlab_bits() == 32)
-        flags = '-DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32';
+        flags = '-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32';
     else
-        flags = '';
+        flags = '-DCMAKE_BUILD_TYPE=Release';
     end
 end
 
