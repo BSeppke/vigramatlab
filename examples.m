@@ -11,6 +11,9 @@ tic
 img = gaussiansmoothing(img, 0.3);
 toc
 
+display( 'testing image padding')
+img_padd = paddimage(img, 10, 20, 30, 40);
+
 
 display( 'testing subimage and correlation facilities')
 img_cut = subimage(img, 100, 50, 151, 101); % Mask needs to have odd size!
