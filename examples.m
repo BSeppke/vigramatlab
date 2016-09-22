@@ -126,23 +126,28 @@ siv_g2yy = splineimageview_g2(siv, pos_x, pos_y, 0,2);
 delete_splineimageview(siv);
 
 display( 'saving resulting images');
-saveimage(img2,  'images/lenna-relabeled-watersheds-on-resized-gradient-image.png');
 
-saveimage( real(img3),        'images/rect-fft-real.png');
-saveimage( imag(img3) ,       'images/rect-fft-imag.png');
-saveimage( abs(img3) ,        'images/rect-fft-magnitude.png');
-saveimage( sqrt(abs(img3)),   'images/rect-fft-sqrt-magnitude.png');
+if ~exist('results', 'dir')
+  mkdir('results');
+end
 
-saveimage( img4 ,  'images/lenna-reflected-both.png');
-saveimage( img5 ,  'images/lenna-rotated-15deg.png');
-saveimage( img6 ,  'images/lenna-aff-rotated-15deg.png');
-saveimage( img7 ,  'images/lenna-disttransform-on-canny.png');
-saveimage( img8 ,  'images/lenna-diff_of_exp.png');
-saveimage( img9 ,  'images/lenna-gsmooth-3.0.png');
-saveimage( img10,  'images/lenna-log-3.0.png');
-saveimage( img11,  'images/lenna-gsharpening-0.5-3.0.png');
-saveimage( img12,  'images/lenna-sharpening-3.0.png');
-saveimage( img13,  'images/lenna-nonlineardiffusion-0.1-2.0.png');
-saveimage( img14,  'images/lenna-gauss-convolve.png');
-saveimage( img15,  'images/lenna-mean-convolve.png');
-saveimage( img16,  'images/lenna-sep-convolve.png');
+saveimage(img2,  'results/lenna-relabeled-watersheds-on-resized-gradient-image.png');
+
+saveimage( real(img3),        'results/rect-fft-real.png');
+saveimage( imag(img3) ,       'results/rect-fft-imag.png');
+saveimage( abs(img3) ,        'results/rect-fft-magnitude.png');
+saveimage( sqrt(abs(img3)),   'results/rect-fft-sqrt-magnitude.png');
+
+saveimage( img4 ,  'results/lenna-reflected-both.png');
+saveimage( img5 ,  'results/lenna-rotated-15deg.png');
+saveimage( img6 ,  'results/lenna-aff-rotated-15deg.png');
+saveimage( img7 ,  'results/lenna-disttransform-on-canny.png');
+saveimage( img8 ,  'results/lenna-diff_of_exp.png');
+saveimage( img9 ,  'results/lenna-gsmooth-3.0.png');
+saveimage( img10,  'results/lenna-log-3.0.png');
+saveimage( img11,  'results/lenna-gsharpening-0.5-3.0.png');
+saveimage( img12,  'results/lenna-sharpening-3.0.png');
+saveimage( img13,  'results/lenna-nonlineardiffusion-0.1-2.0.png');
+saveimage( img14,  'results/lenna-gauss-convolve.png');
+saveimage( img15,  'results/lenna-mean-convolve.png');
+saveimage( img16,  'results/lenna-sep-convolve.png');
