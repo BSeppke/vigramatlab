@@ -27,6 +27,12 @@ display( 'performing watershed transform on resized gradient image')
 img_ggm = gaussiangradient(resizeimage(img, 2*shape(1), 2*shape(2),  4),  1.0);
 img2 = regionimagetocrackedgeimage( labelimage(watersheds(img_ggm)), 0.0);
 
+display( 'performing slic segmentation on lenna image')
+img2_slic = regionimagetocrackedgeimage( slic(img), 0.0);
+
+display( 'performing slic segmentation on red channel of lenna image')
+img2red_slic = regionimagetocrackedgeimage( slic(img(:,:,1)), 0.0);
+
 display( 'performing fft on image')
 img3 = fouriertransform(loadimage('images/rect.gif'));
 
@@ -132,6 +138,8 @@ if ~exist('results', 'dir')
 end
 
 saveimage(img2,  'results/lenna-relabeled-watersheds-on-resized-gradient-image.png');
+saveimage(img2_slic,  'results/lenna-slic.png');
+saveimage(img2red_slic,  'results/lenna-red-slic.png');
 
 saveimage( real(img3),        'results/rect-fft-real.png');
 saveimage( imag(img3) ,       'results/rect-fft-imag.png');
