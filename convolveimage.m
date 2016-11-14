@@ -53,7 +53,7 @@ function convolved_image_band = convolveimage_band(image_band, matrix)
     convolved_image_band = zeros(w,h,'single');
     convolved_ptr = libpointer('singlePtr',convolved_image_band);
     
-    result = calllib('libvigra_c','vigra_convolveimage_c', ptr, convolved_ptr, ptr_mat, w,h, k_w, k_h);
+    result = calllib('libvigra_c','vigra_convolveimage_c', ptr, ptr_mat, convolved_ptr, w,h, k_w, k_h);
     
     switch result
         case 0
@@ -83,7 +83,7 @@ function convolved_image_band = separableconvolveimage_band(image_band, h_matrix
     convolved_image_band = zeros(w,h,'single');
     convolved_ptr = libpointer('singlePtr',convolved_image_band);
     
-    result = calllib('libvigra_c','vigra_separableconvolveimage_c', ptr, convolved_ptr, ptr_h, ptr_v, w,h, k1_w, k2_h);
+    result = calllib('libvigra_c','vigra_separableconvolveimage_c', ptr, ptr_h, ptr_v, convolved_ptr, w,h, k1_w, k2_h);
     
     switch result
         case 0
