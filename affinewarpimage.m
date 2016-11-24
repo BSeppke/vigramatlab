@@ -31,7 +31,7 @@ function transformed_image_band = affinewarpimage_band(image_band, affineMat, re
     transformed_image_band = zeros(w,h,'single');
     transformed_ptr = libpointer('singlePtr',transformed_image_band);
     
-    result = calllib('libvigra_c','vigra_affinewarpimage_c', ptr, transformed_ptr, ptrMat, w,h, uint8(resample_mode));
+    result = calllib('libvigra_c','vigra_affinewarpimage_c', ptr, ptrMat, transformed_ptr, w,h, uint8(resample_mode));
     
     switch result
         case 0

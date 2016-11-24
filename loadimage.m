@@ -1,8 +1,8 @@
 function image = loadimage( filename )
 
-    w = calllib('libvigra_c','get_width_c', filename);
-    h = calllib('libvigra_c','get_height_c',filename);
-    b = calllib('libvigra_c','get_numbands_c',filename);
+    w = calllib('libvigra_c','vigra_imagewidth_c', filename);
+    h = calllib('libvigra_c','vigra_imageheight_c',filename);
+    b = calllib('libvigra_c','vigra_imagenumbands_c',filename);
     
     if( b == 1 )
         image = zeros(h,w,'single');

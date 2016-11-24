@@ -28,7 +28,7 @@ function upwinded_image_band = upwindimage_band(image_band, radius)
     upwinded_image_band = zeros(w,h,'single');
     upwinded_ptr = libpointer('singlePtr',upwinded_image_band);
     
-    result = calllib('libvigra_c','vigraext_upwindimage_c', ptr, upwinded_ptr, w,h, single(radius));
+    result = calllib('libvigra_c','vigra_upwindimage_c', ptr, upwinded_ptr, w,h, single(radius));
     
     switch result
         case 0

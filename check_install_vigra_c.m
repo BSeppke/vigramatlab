@@ -93,7 +93,11 @@ function installed = vigra_installed()
 end
 
 function result = build_vigra_c()
-    system_env(['cat ' , vigra_c_path() , 'src/vigra_*.h | grep -v ^#include | grep -v "^#ifndef VIGRA" | grep -v "^#define VIGRA" | grep -v ^#endif | sed -e "s/LIBEXPORT//" | sed -e "s/PixelType/float/g" > libvigra_c.h'])
+    system_env(['mv ', vigra_c_path() , 'src/vigra_kernelutils_c.h ', vigra_c_path(), 'src/vigra_kernelutils_c.temp']);
+    system_env(['mv ', vigra_c_path() , 'src/vigra_c.h ', vigra_c_path(), 'src/vigra_c.temp']);
+    system_env(['cat ' , vigra_c_path() , 'src/vigra_*.h | grep -v ^#include | grep -v "^//" | grep -v "^#ifndef VIGRA" | grep -v "^#define VIGRA" | grep -v ^#endif | sed -e "s/LIBEXPORT//" | sed -e "s/PixelType/float/g" > libvigra_c.h'])
+    system_env(['mv ', vigra_c_path() , 'src/vigra_kernelutils_c.temp ', vigra_c_path(), 'src/vigra_kernelutils_c.h']);
+    system_env(['mv ', vigra_c_path() , 'src/vigra_c.temp ', vigra_c_path(), 'src/vigra_c.h']);
     if( isunix() )
         if( vigra_installed() == 1)
             display ('-------------- BUILDING VIGRA-C-WRAPPER FOR COMPUTER VISION AND IMAGE PROCESSING TASKS --------------')
