@@ -99,6 +99,7 @@ sep_y_kernel =  [ 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0 ]/9.0;
 img14 = convolveimage( img, gauss_kernel');
 img15 = convolveimage( img, mean_kernel');
 img16 = convolveimage( img, sep_x_kernel, sep_y_kernel);
+img17 = medianfilter( img, 3, 3);
 
 
 display( 'testing the spline image view');
@@ -159,3 +160,4 @@ saveimage( img13,  'results/lenna-nonlineardiffusion-0.1-2.0.png');
 saveimage( img14,  'results/lenna-gauss-convolve.png');
 saveimage( img15,  'results/lenna-mean-convolve.png');
 saveimage( img16,  'results/lenna-sep-convolve.png');
+saveimage( img17,  'results/lenna-median-3x3.png');
