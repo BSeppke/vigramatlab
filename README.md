@@ -10,6 +10,8 @@ MatLab bindings using the vigra_c wrapper library to connect two famous toolsets
 Before getting things to work for Mac OS X 10.10, you need to have XCode (>= 7.0) to be installed. Unfortunately, this is not sufficient - you need to patch MatLab 2015b to get the c-library calls working at OS X 10.10. The steps for this patch as well as the patch itself can be retrieved from:
 http://de.mathworks.com/matlabcentral/answers/246507-why-can-t-mex-find-a-supported-compiler-in-matlab-r2015b-after-i-upgraded-to-xcode-7-0#answer_194526
 
+For future version of MatLab, this is not necessary anymore.
+
 2. Auto-build of the c-wrapper
 -----------------------------------
 Each time you enter "load_vigra_c" to load the shared library of the c-wrapper, the existence of that library is checked. If it is not present, it will be build from source (mac os x and linux) or binaries will be copied (for windows).
@@ -43,6 +45,7 @@ MatLab keeps its own libtiff.5.dylib and is not willing to use other libs. Howev
 
 > cp /opt/local/lib/libtiff.5.dylib .
 
+Unfortunately, a similar error occurs on windows, too. Here, I assume, that the hdf5 version of the vigraimpex (1.12.0-patch1) of the vigra_c is offending MatLab's own hdf5 lib (1.8.12). Even worse, an exchange of Matlabd lib to the new one does not work either. Definitely a TODO to be solved!
 
 3. Look at the examples
 -----------------------------------

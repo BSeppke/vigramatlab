@@ -1,5 +1,4 @@
 function result = check_install_vigra_c()
-  
     if( not(exist( dylib_path() ,'file')) )
         result = build_vigra_c();
     end
@@ -92,12 +91,54 @@ function installed = vigra_installed()
     end
 end
 
+function create_header_file()
+    headers = {'vigra_convert_c.h';'vigra_filters_c.h';...
+               'vigra_imgproc_c.h';'vigra_impex_c.h';'vigra_morphology_c.h';...
+               'vigra_segmentation_c.h';'vigra_splineimageview_c.h';...
+               'vigra_tensors_c.h'};
+    
+    ignore_patterns = {'#include';'#ifndef VIGRA';'#define VIGRA';'#endif'};
+    
+    result_file = 'libvigra_c.h';
+    
+    out_file = fopen(result_file, 'w');
+    
+    for i=1:size(headers,1)
+        filename = [vigra_c_path(), 'src/', headers(i)];
+        in_file = fopen(strjoin(filename,''), 'r');
+        
+        tline = fgets(in_file);
+        while ischar(tline)
+            ignore=0;
+            for j=1:size(ignore_patterns,1)
+                pattern=strjoin(ignore_patterns(j));
+                lenline = size(tline,2);
+                lenpat  = size(pattern,2);
+                if(lenline >= lenpat)
+                    if(strcmp(tline(1:lenpat),pattern))
+                        ignore=1;
+                    end
+                end
+            end
+            if(ignore == 0)
+                tline = strrep(tline, 'PixelType','float');
+                if( isunix() )
+                    tline = strrep(tline, 'LIBEXPORT','extern "C"');
+                else
+                    tline = strrep(tline, 'LIBEXPORT','extern "C" __declspec(dllexport)');
+                end
+                fwrite(out_file,tline);
+            end
+            tline = fgets(in_file);
+        end
+        fclose(in_file);
+    end
+    fclose(out_file);
+end
+
+
 function result = build_vigra_c()
-    system_env(['mv ', vigra_c_path() , 'src/vigra_kernelutils_c.h ', vigra_c_path(), 'src/vigra_kernelutils_c.temp']);
-    system_env(['mv ', vigra_c_path() , 'src/vigra_c.h ', vigra_c_path(), 'src/vigra_c.temp']);
-    system_env(['cat ' , vigra_c_path() , 'src/vigra_*.h | grep -v ^#include | grep -v "^//" | grep -v "^#ifndef VIGRA" | grep -v "^#define VIGRA" | grep -v ^#endif | sed -e "s/LIBEXPORT//" | sed -e "s/PixelType/float/g" > libvigra_c.h'])
-    system_env(['mv ', vigra_c_path() , 'src/vigra_kernelutils_c.temp ', vigra_c_path(), 'src/vigra_kernelutils_c.h']);
-    system_env(['mv ', vigra_c_path() , 'src/vigra_c.temp ', vigra_c_path(), 'src/vigra_c.h']);
+    create_header_file();
     if( isunix() )
         if( vigra_installed() == 1)
             display ('-------------- BUILDING VIGRA-C-WRAPPER FOR COMPUTER VISION AND IMAGE PROCESSING TASKS --------------')
@@ -110,8 +151,8 @@ function result = build_vigra_c()
             error('Vigra is not found. Please check if the prefix path is set correctly in ~/.profile environment file!')
         end
     elseif( ispc() )
-        bindir = [vigra_c_path() , 'bin/' , 'win' , idl_bits() , '/'];
-        result = system(['copy ' , bindir , '*.dll ' , vigraidl_path()]);
+        bindir = [vigra_c_path() , 'bin/' , 'win' , matlab_bits() , '/'];
+        result = copyfile( [bindir , '*.dll '] , vigramatlab_path());
     else
         error('Only Mac OS X, Unix and Windows are supported for auto build of vigra_c!')
     end
