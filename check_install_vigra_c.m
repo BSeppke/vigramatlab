@@ -122,11 +122,7 @@ function create_header_file()
             end
             if(ignore == 0)
                 tline = strrep(tline, 'PixelType','float');
-                if( isunix() )
-                    tline = strrep(tline, 'LIBEXPORT','extern "C"');
-                else
-                    tline = strrep(tline, 'LIBEXPORT','extern "C" __declspec(dllexport)');
-                end
+                tline = strrep(tline, 'LIBEXPORT','');
                 fwrite(out_file,tline);
             end
             tline = fgets(in_file);
