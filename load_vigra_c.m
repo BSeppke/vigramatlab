@@ -10,8 +10,7 @@ function load_vigra_c()
         elseif ( isunix() )
             loadlibrary('libvigra_c.so');
         elseif (ispc() )
-            error('Error: Due to hdf5 conflicts, windows is temporary not supported!')
-            %loadlibrary('vigra_c.dll', 'libvigra_c.h');
+            loadlibrary('vigra_c.dll', 'libvigra_c.h', 'alias', 'libvigra_c');
         else
             error('Error: Only macosx, windows and unix are supported!')
         end
