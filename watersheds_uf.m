@@ -1,7 +1,7 @@
-function labeled_image = labelimage(image, varargin)
+function labeled_image = watersheds_uf(image, varargin)
     eight_connectivity = 1;
     if nargin > 1, eight_connectivity = varargin{1};end
-
+    
     shape = size(image);
     h = shape(1);
     w = shape(2);
@@ -14,15 +14,15 @@ function labeled_image = labelimage(image, varargin)
     labeled_image = zeros(h,w,b,'single');
     
     for i=1:b
-        labeled_image(:,:,i) = labelimage_band(image(:,:,i), eight_connectivity);
+        labeled_image(:,:,i) = watersheds_uf_band(image(:,:,i), eight_connectivity);
     end
     
 end
 
-function labeled_image_band = labelimage_band(image_band, varargin)
+function labeled_image_band = watersheds_uf_band(image_band, varargin)
     eight_connectivity = 1;
     if nargin > 1, eight_connectivity = varargin{1};end
-    
+
     shape = size(image_band);
     h = shape(1);
     w = shape(2);
@@ -32,10 +32,10 @@ function labeled_image_band = labelimage_band(image_band, varargin)
     labeled_image_band = zeros(w,h,'single');
     label_ptr = libpointer('singlePtr',labeled_image_band);
     
-    result = calllib('libvigra_c','vigra_labelimage_c', ptr, label_ptr, w,h, eight_connectivity);
+    result = calllib('libvigra_c','vigra_watershedsunionfind_c', ptr, label_ptr, w,h, eight_connectivity);
     
     if ( result == -1 )
-        error('Error in vigramatlab.segmentation.labelimage: Labeling of image failed!')
+        error('Error in vigramatlab.segmentation.watersheds_uf: Union-Find Watersheds Transform of image failed!')
     else
         labeled_image_band = label_ptr.Value';
     end

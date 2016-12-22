@@ -1,4 +1,6 @@
-function minima_image = localminima(image)
+function minima_image = localminima(image, varargin)
+    eight_connectivity = 1;
+    if nargin > 1, eight_connectivity = varargin{1};end
 
     shape = size(image);
     h = shape(1);
@@ -12,12 +14,14 @@ function minima_image = localminima(image)
     minima_image = zeros(h,w,b,'single');
     
     for i=1:b
-        minima_image(:,:,i) = localminima_band(image(:,:,i));
+        minima_image(:,:,i) = localminima_band(image(:,:,i), eight_connectivity);
     end
     
 end
 
-function minima_band = localminima_band(image_band)
+function minima_band = localminima_band(image_band, varargin)
+    eight_connectivity = 1;
+    if nargin > 1, eight_connectivity = varargin{1};end
     
     shape = size(image_band);
     h = shape(1);
@@ -28,7 +32,7 @@ function minima_band = localminima_band(image_band)
     minima_band = zeros(w,h,'single');
     minima_ptr = libpointer('singlePtr',minima_band);
     
-    result = calllib('libvigra_c','vigra_localminima_c', ptr, minima_ptr, w,h);
+    result = calllib('libvigra_c','vigra_localminima_c', ptr, minima_ptr, w,h, eight_connectivity);
     
     if ( result == 0 )
         minima_band = minima_ptr.Value';

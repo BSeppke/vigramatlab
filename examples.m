@@ -25,7 +25,8 @@ neg_matches = localminima(fncc_res);
 
 display( 'performing watershed transform on resized gradient image')
 img_ggm = gaussiangradient(resizeimage(img, 2*shape(1), 2*shape(2),  4),  1.0);
-img2 = regionimagetocrackedgeimage( labelimage(watersheds(img_ggm)), 0.0);
+img2a = regionimagetocrackedgeimage( labelimage(watersheds_uf(img_ggm)), 0.0);
+img2b = regionimagetocrackedgeimage( labelimage(watersheds_rg(img_ggm)), 0.0);
 
 display( 'performing slic segmentation on lenna image')
 img2_slic = regionimagetocrackedgeimage( slic(img), 0.0);
@@ -138,7 +139,8 @@ if ~exist('results', 'dir')
   mkdir('results');
 end
 
-saveimage(img2,  'results/lenna-relabeled-watersheds-on-resized-gradient-image.png');
+saveimage(img2a,  'results/lenna-relabeled-watersheds-uf-on-resized-gradient-image.png');
+saveimage(img2b,  'results/lenna-relabeled-watersheds-rg-on-resized-gradient-image.png');
 saveimage(img2_slic,  'results/lenna-slic.png');
 saveimage(img2red_slic,  'results/lenna-red-slic.png');
 

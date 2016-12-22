@@ -1,4 +1,6 @@
-function maxima_image = localmaxima(image)
+function maxima_image = localmaxima(image, varargin)
+    eight_connectivity = 1;
+    if nargin > 1, eight_connectivity = varargin{1};end
 
     shape = size(image);
     h = shape(1);
@@ -12,12 +14,14 @@ function maxima_image = localmaxima(image)
     maxima_image = zeros(h,w,b,'single');
     
     for i=1:b
-        maxima_image(:,:,i) = localmaxima_band(image(:,:,i));
+        maxima_image(:,:,i) = localmaxima_band(image(:,:,i),eight_connectivity);
     end
     
 end
 
-function maxima_band = localmaxima_band(image_band)
+function maxima_band = localmaxima_band(image_band, varargin)
+    eight_connectivity = 1;
+    if nargin > 1, eight_connectivity = varargin{1};end
     
     shape = size(image_band);
     h = shape(1);
@@ -28,7 +32,7 @@ function maxima_band = localmaxima_band(image_band)
     maxima_band = zeros(w,h,'single');
     maxima_ptr = libpointer('singlePtr',maxima_band);
     
-    result = calllib('libvigra_c','vigra_localmaxima_c', ptr, maxima_ptr, w,h);
+    result = calllib('libvigra_c','vigra_localmaxima_c', ptr, maxima_ptr, w, h, eight_connectivity);
     
     if ( result == 0 )
         maxima_band = maxima_ptr.Value';
