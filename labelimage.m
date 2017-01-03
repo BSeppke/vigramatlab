@@ -14,7 +14,12 @@ function labeled_image = labelimage(image, varargin)
     labeled_image = zeros(h,w,b,'single');
     
     for i=1:b
-        labeled_image(:,:,i) = labelimage_band(image(:,:,i), eight_connectivity);
+        if(nargin > 2)
+            %Call with background handling
+            labeled_image(:,:,i) = labelimage_band(image(:,:,i), eight_connectivity, varargin{2});
+        else
+            labeled_image(:,:,i) = labelimage_band(image(:,:,i), eight_connectivity);
+        end
     end
     
 end
@@ -32,8 +37,12 @@ function labeled_image_band = labelimage_band(image_band, varargin)
     labeled_image_band = zeros(w,h,'single');
     label_ptr = libpointer('singlePtr',labeled_image_band);
     
-    result = calllib('libvigra_c','vigra_labelimage_c', ptr, label_ptr, w,h, eight_connectivity);
-    
+    if(nargin > 2)
+        %Call with background handling
+        result = calllib('libvigra_c','vigra_labelimagewithbackground_c', ptr, label_ptr, w,h, eight_connectivity, varargin{2});
+    else
+        result = calllib('libvigra_c','vigra_labelimage_c', ptr, label_ptr, w,h, eight_connectivity);
+    end    
     if ( result == -1 )
         error('Error in vigramatlab.segmentation.labelimage: Labeling of image failed!')
     else

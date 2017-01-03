@@ -34,6 +34,10 @@ img2_slic = regionimagetocrackedgeimage( slic(img), 0.0);
 display( 'performing slic segmentation on red channel of lenna image')
 img2red_slic = regionimagetocrackedgeimage( slic(img(:,:,1)), 0.0);
 
+display('testing feature extraction')
+stats1 = extractfeatures(img, slic(img));
+stats2 = extractfeatures(img, watersheds_uf(gaussiangradient(img, 2.0)));
+
 display( 'performing fft on image')
 img3 = fouriertransform(loadimage('images/rect.gif'));
 
