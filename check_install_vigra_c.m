@@ -33,7 +33,6 @@ function path = dylib_path()
 end
 
 function flags = cmake_flags()
-
     if( matlab_bits() == 32)
         flags = '-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32';
     else
@@ -41,33 +40,12 @@ function flags = cmake_flags()
     end
 end
 
-function script_filename = base_login_script()
-    script_filename =  '~/.profile';
-end
-
 function path = vigra_c_path()
     path = [vigramatlab_path() ,'vigra_c/'];
 end
 
-function script_filename = login_script()
-
-    if ( exist( base_login_script(), 'file') )
-        script_filename = base_login_script();
-    else
-        script_filename = [vigra_c_path() , 'fallback.profile'];
-    end
-end
-
-function cmd = login_cmd()
-    cmd = ['source ' , login_script()];
-end
-
-function result = system_env( arg )
-    result = system([login_cmd() , ' && ' , arg]);
-end
-
 function version = vigra_version()
-    [status, version_string] = system([login_cmd() , ' && vigra-config --version']);
+    [status, version_string] = system('vigra-config --version');
     disp(version_string);
     if (status == 0)
         version = str2double(strsplit(version_string, '.'));
@@ -136,10 +114,14 @@ end
 function result = build_vigra_c()
     create_header_file();
     if( isunix() )
+        % Add MacPorts path for Mac OS X, if not already there
+        if( ismac() && isempty(strfind(getenv('PATH'), '/opt/local/bin:')) )
+            setenv('PATH', ['/opt/local/bin:' getenv('PATH') ]);
+        end
         if( vigra_installed() == 1)
             display ('-------------- BUILDING VIGRA-C-WRAPPER FOR COMPUTER VISION AND IMAGE PROCESSING TASKS --------------')
-            if( system_env(['cd ' , vigra_c_path() , '&& mkdir -p build && cd build && cmake ' , cmake_flags(), ' .. && make && cd .. && rm -rf ./build']) == 0)
-                result = copyfile([vigra_c_path() , 'bin/' , dylib_file()], dylib_path(), 'f');
+            if( system(['cd ' , vigra_c_path() , '&& mkdir -p build && cd build && cmake ' , cmake_flags(), ' .. && make && cd .. && rm -rf ./build']) == 0)
+                copyfile([vigra_c_path() , 'bin/' , dylib_file()], dylib_path(), 'f');
             else
                 error('making the vigra_c lib failed, although vigra seems to be installed')
             end     
@@ -148,7 +130,7 @@ function result = build_vigra_c()
         end
     elseif( ispc() )
         bindir = [vigra_c_path() , 'bin/' , 'win' , matlab_bits() , '/'];
-        result = copyfile( [bindir , '*.dll '] , vigramatlab_path());
+        copyfile( [bindir , '*.dll '] , vigramatlab_path());
     else
         error('Only Mac OS X, Unix and Windows are supported for auto build of vigra_c!')
     end
