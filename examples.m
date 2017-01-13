@@ -40,6 +40,7 @@ stats2 = extractfeatures(img, watersheds_uf(gaussiangradient(img, 2.0)));
 
 display( 'performing fft on image')
 img3 = fouriertransform(loadimage('images/rect.gif'));
+img3ifft = fouriertransforminverse(img3);
 
 display( 'testing rotation and reflection functions on image')
 img4 = reflectimage( img, 3);
@@ -101,9 +102,9 @@ mean_kernel =  [[1.0 , 1.0 , 1.0],  [1.0 , 1.0 , 1.0], [1.0 , 1.0 , 1.0] ]/9.0;
 sep_x_kernel =  [ 1.0,  1.0, 1.0 ]/3.0;
 sep_y_kernel =  [ 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0 ]/9.0;
 
-img14 = convolveimage( img, gauss_kernel');
-img15 = convolveimage( img, mean_kernel');
-img16 = convolveimage( img, sep_x_kernel, sep_y_kernel);
+img14 = convolveimage( img, gauss_kernel);
+img15 = convolveimage( img, mean_kernel);
+img16 = convolveimage( img, sep_x_kernel', sep_y_kernel');
 img17 = medianfilter( img, 3, 3);
 
 
@@ -152,6 +153,8 @@ saveimage( real(img3),        'results/rect-fft-real.png');
 saveimage( imag(img3) ,       'results/rect-fft-imag.png');
 saveimage( abs(img3) ,        'results/rect-fft-magnitude.png');
 saveimage( sqrt(abs(img3)),   'results/rect-fft-sqrt-magnitude.png');
+saveimage( real(img3ifft),    'results/rect-fft-ifft-real.png');
+saveimage( imag(img3ifft) ,   'results/rect-fft-ifft-imag.png');
 
 saveimage( img4 ,  'results/lenna-reflected-both.png');
 saveimage( img5 ,  'results/lenna-rotated-15deg.png');

@@ -1,8 +1,8 @@
 function crack_edge_image = regionimagetocrackedgeimage(image, mark)
     
     shape = size(image);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
     b = 1;
     
     if ( length(shape) == 3 )
@@ -20,10 +20,10 @@ end
 function crack_edge_image_band = regionimagetocrackedgeimage_band(image_band, mark)
     
     shape = size(image_band);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
    
-    ptr = libpointer('singlePtr',image_band');
+    ptr = libpointer('singlePtr',image_band);
     
     crack_edge_image_band = zeros(2*w-1,2*h-1,'single');
     crack_edge_ptr = libpointer('singlePtr',crack_edge_image_band);
@@ -33,6 +33,6 @@ function crack_edge_image_band = regionimagetocrackedgeimage_band(image_band, ma
     if ( result == -1 )
         error('Error in vigramatlab.segmentation.regionimagetocrackedgeimage: Creation of CrackEdge image failed!')
     else
-        crack_edge_image_band = crack_edge_ptr.Value';
+        crack_edge_image_band = crack_edge_ptr.Value;
     end
 end

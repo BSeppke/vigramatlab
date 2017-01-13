@@ -3,15 +3,15 @@ function convolved_image = convolveimage(image, h_or_complete_matrix, v_matrix)
     narginchk(2, 3)
 
     shape = size(image);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
     b = 1;
     
     if ( length(shape) == 3 )
         b = shape(3);
     end
         
-    convolved_image = zeros(h,w,b,'single');
+    convolved_image = zeros(w,h,b,'single');
     
     if(nargin == 2)
         for i=1:b
@@ -19,10 +19,10 @@ function convolved_image = convolveimage(image, h_or_complete_matrix, v_matrix)
         end
     elseif(nargin == 3)
         k1_shape = size(h_or_complete_matrix);
-        k1_h = k1_shape(1);
+        k1_h = k1_shape(2);
         
         k2_shape = size(v_matrix);
-        k2_w = k2_shape(2);
+        k2_w = k2_shape(1);
         
         if(k1_h == 1 && k2_w ==1)
             for i=1:b
@@ -39,16 +39,16 @@ end
 function convolved_image_band = convolveimage_band(image_band, matrix)
 
     shape = size(image_band);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
    
     k_shape = size(matrix);
-    k_h = k_shape(1);
-    k_w = k_shape(2);
+    k_w = k_shape(1);
+    k_h = k_shape(2);
   
-    ptr = libpointer('singlePtr',image_band');
+    ptr = libpointer('singlePtr',image_band);
     
-    ptr_mat = libpointer('doublePtr',matrix');
+    ptr_mat = libpointer('doublePtr',matrix);
     
     convolved_image_band = zeros(w,h,'single');
     convolved_ptr = libpointer('singlePtr',convolved_image_band);
@@ -57,7 +57,7 @@ function convolved_image_band = convolveimage_band(image_band, matrix)
     
     switch result
         case 0
-            convolved_image_band = convolved_ptr.Value';
+            convolved_image_band = convolved_ptr.Value;
         case 1
             error('Error in vigramatlab.filters.convolveimage: Convolution failed!')
     end
@@ -66,19 +66,19 @@ end
 function convolved_image_band = separableconvolveimage_band(image_band, h_matrix, v_matrix)
     
     shape = size(image_band);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
    
     k1_shape = size(h_matrix);
-    k1_w = k1_shape(2); %x-kernel length
+    k1_w = k1_shape(1); %x-kernel length
     
     k2_shape = size(v_matrix);
-    k2_h = k2_shape(1); %y-kernel length
+    k2_h = k2_shape(2); %y-kernel length
     
-    ptr = libpointer('singlePtr',image_band');
+    ptr = libpointer('singlePtr',image_band);
     
-    ptr_h = libpointer('doublePtr',h_matrix');
-    ptr_v = libpointer('doublePtr',v_matrix');
+    ptr_h = libpointer('doublePtr',h_matrix);
+    ptr_v = libpointer('doublePtr',v_matrix);
     
     convolved_image_band = zeros(w,h,'single');
     convolved_ptr = libpointer('singlePtr',convolved_image_band);
@@ -87,7 +87,7 @@ function convolved_image_band = separableconvolveimage_band(image_band, h_matrix
     
     switch result
         case 0
-            convolved_image_band = convolved_ptr.Value';
+            convolved_image_band = convolved_ptr.Value;
         case 1
             error('Error in vigramatlab.filters.separableconvolveimage: Separable convolution failed!')
     end

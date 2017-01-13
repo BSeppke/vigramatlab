@@ -5,14 +5,14 @@ function image = loadimage( filename )
     b = calllib('libvigra_c','vigra_imagenumbands_c',filename);
     
     if( b == 1 )
-        image = zeros(h,w,'single');
+        image = zeros(w,h,'single');
         ptr = libpointer('singlePtr',image);
 
         result = calllib('libvigra_c','vigra_importgrayimage_c', ptr , w,h,filename);
         
         switch result
             case 0
-                image = ptr.Value';
+                image = ptr.Value;
             case 1
                 error('vigramatlab.impex.loadgraybimage: Image cannot be loaded by vigra!')
             case 2
@@ -33,10 +33,10 @@ function image = loadimage( filename )
 
         switch result
             case 0
-                image = zeros(h,w,3, 'single');
-                image(:,:,1) = r_ptr.Value';
-                image(:,:,2) = g_ptr.Value';
-                image(:,:,3) = b_ptr.Value';
+                image = zeros(w,h,3, 'single');
+                image(:,:,1) = r_ptr.Value;
+                image(:,:,2) = g_ptr.Value;
+                image(:,:,3) = b_ptr.Value;
             case 1
                 error('vigramatlab.impex.loadrgbimage: Image cannot be loaded by vigra!')
             case 2

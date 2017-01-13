@@ -12,8 +12,8 @@ function labeled_image = slic(image, seedDistance, intensityScaling, iterations)
     end
 
     shape = size(image);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
     b = 1;
     
     if ( length(shape) == 3 )
@@ -25,7 +25,7 @@ function labeled_image = slic(image, seedDistance, intensityScaling, iterations)
         labeled_image = zeros(h,w,1,'single');
         labeled_image(:,:,1) = slic_rgb(image(:,:,1), image(:,:,2), image(:,:,3), seedDistance, intensityScaling, iterations);
     else
-        labeled_image = zeros(h,w,b,'single');
+        labeled_image = zeros(w,h,b,'single');
         for i=1:b
             labeled_image(:,:,i) = slic_band(image(:,:,i), seedDistance, intensityScaling, iterations);
         end
@@ -46,10 +46,10 @@ function labeled_image_band = slic_band(image_band, seedDistance, intensityScali
     end
 
     shape = size(image_band);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
    
-    ptr = libpointer('singlePtr',image_band');
+    ptr = libpointer('singlePtr',image_band);
     
     labeled_image_band = zeros(w,h,'single');
     label_ptr = libpointer('singlePtr',labeled_image_band);
@@ -59,7 +59,7 @@ function labeled_image_band = slic_band(image_band, seedDistance, intensityScali
     if ( result == -1 )
         error('Error in vigramatlab.segmentation.slic_gray: SLIC segmentation of image failed!')
     else
-        labeled_image_band = label_ptr.Value';
+        labeled_image_band = label_ptr.Value;
     end
 end
 
@@ -77,8 +77,8 @@ function labeled_image_band = slic_rgb(image_band_r, image_band_g, image_band_b,
     end
     
     shape = size(image_band_r);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
    
     ptr_r = libpointer('singlePtr',image_band_r');
     ptr_g = libpointer('singlePtr',image_band_g');
@@ -92,6 +92,6 @@ function labeled_image_band = slic_rgb(image_band_r, image_band_g, image_band_b,
     if ( result == -1 )
         error('Error in vigramatlab.segmentation.slic_rgb: SLIC segmentation of image failed!')
     else
-        labeled_image_band = label_ptr.Value';
+        labeled_image_band = label_ptr.Value;
     end
 end

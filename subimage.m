@@ -10,7 +10,7 @@ function cropped_image = subimage(image, left, upper, right, lower)
     new_width = right-left;
     new_height = lower-upper;
     
-    cropped_image = zeros(new_height,new_width,b,'single');
+    cropped_image = zeros(new_width,new_height,b,'single');
     
     for i=1:b
         cropped_image(:,:,i) = subimage_band(image(:,:,i), left, upper, right, lower);
@@ -21,13 +21,13 @@ end
 function cropped_band = subimage_band(image_band, left, upper, right, lower)
 
     shape = size(image_band);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
     
     new_width = right-left;
     new_height = lower-upper;
    
-    ptr = libpointer('singlePtr',image_band');
+    ptr = libpointer('singlePtr',image_band);
     
     cropped_band = zeros(new_width,new_height,'single');
     resized_ptr = libpointer('singlePtr',cropped_band);
@@ -36,7 +36,7 @@ function cropped_band = subimage_band(image_band, left, upper, right, lower)
     
     switch result
         case 0
-            cropped_band = resized_ptr.Value';
+            cropped_band = resized_ptr.Value;
         case 1
             error('Error in vigramatlab.imgproc:subimage: Subimage extraction failed!')
         case 2

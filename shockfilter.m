@@ -1,15 +1,15 @@
 function filtered_image = shockfilter(image, sigma, rho, upwind_factor_h, iterations)
     
     shape = size(image);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
     b = 1;
     
     if ( length(shape) == 3 )
         b = shape(3);
     end
     
-    filtered_image = zeros(h,w,b,'single');
+    filtered_image = zeros(w,h,b,'single');
     
     for i=1:b
         filtered_image(:,:,i) = shockfilter_band(image(:,:,i), sigma, rho, upwind_factor_h, iterations);
@@ -20,10 +20,10 @@ end
 function filtered_image_band = shockfilter_band(image_band, sigma, rho, upwind_factor_h, iterations)
 
     shape = size(image_band);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
    
-    ptr = libpointer('singlePtr',image_band');
+    ptr = libpointer('singlePtr',image_band);
     
     filtered_image_band = zeros(w,h,'single');
     filtered_ptr = libpointer('singlePtr',filtered_image_band);
@@ -32,7 +32,7 @@ function filtered_image_band = shockfilter_band(image_band, sigma, rho, upwind_f
     
     switch result
         case 0
-            filtered_image_band = filtered_ptr.Value';
+            filtered_image_band = filtered_ptr.Value;
         case 1
             error('Error in vigramatlab.filters.shockfilter: Shock filtering failed!');
         case 2

@@ -1,8 +1,8 @@
 function correlation_image = fastnormalizedcrosscorrelation(image, mask)
     
     shape = size(image);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
         
     b = 1;
     
@@ -10,7 +10,7 @@ function correlation_image = fastnormalizedcrosscorrelation(image, mask)
         b = shape(3);
     end
     
-    correlation_image = zeros(h,w,b,'single');
+    correlation_image = zeros(w,h,b,'single');
     
     for i=1:b
         correlation_image(:,:,i) = fastnormalizedcrosscorrelation_band(image(:,:,i), mask(:,:,i));
@@ -21,14 +21,14 @@ end
 function correlation_band = fastnormalizedcrosscorrelation_band(image_band, mask_band)
 
     shape = size(image_band);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);  
+    h = shape(2); 
    
     mask_shape = size(mask_band);
     mask_h = mask_shape(1);
     mask_w = mask_shape(2);
     
-    ptr = libpointer('singlePtr',image_band');
+    ptr = libpointer('singlePtr',image_band);
     mask_ptr = libpointer('singlePtr',mask_band');
     
     correlation_band = zeros(w,h,'single');
@@ -38,7 +38,7 @@ function correlation_band = fastnormalizedcrosscorrelation_band(image_band, mask
     
     switch result
         case 0
-            correlation_band = correlation_ptr.Value';
+            correlation_band = correlation_ptr.Value;
         case 1
             error('Error in vigramatlab.imgproc:fastnormalizedcrosscorrelation: Fast normalized cross-correlation failed!')
         case 2

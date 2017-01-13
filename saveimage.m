@@ -3,8 +3,8 @@ function result = saveimage( image, filename )
 	result = 1;
     
     shape = size(image);
-    h = shape(1);
-    w = shape(2);
+    w = shape(1);
+    h = shape(2);
     b = 1;
     
     sshape = size(shape);
@@ -14,13 +14,13 @@ function result = saveimage( image, filename )
     end
     
     if( b == 1 )
-        ptr = libpointer('singlePtr',image');
+        ptr = libpointer('singlePtr',image);
         result = calllib('libvigra_c','vigra_exportgrayimage_c', ptr , w,h, filename);
     end
     if( b == 3 )
-        img_r = image(:,:,1)';
-        img_g = image(:,:,2)';
-        img_b = image(:,:,3)';
+        img_r = image(:,:,1);
+        img_g = image(:,:,2);
+        img_b = image(:,:,3);
 
         r_ptr = libpointer('singlePtr',img_r);
         g_ptr = libpointer('singlePtr',img_g);
