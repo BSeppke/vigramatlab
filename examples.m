@@ -39,7 +39,8 @@ stats1 = extractfeatures(img, slic(img));
 stats2 = extractfeatures(img, watersheds_uf(gaussiangradient(img, 2.0)));
 
 display( 'performing fft on image')
-img3 = fouriertransform(loadimage('images/rect.gif'));
+img_rect = loadimage('images/rect.png');
+img3 = fouriertransform(img_rect(:,:,4));
 img3ifft = fouriertransforminverse(img3);
 
 display( 'testing rotation and reflection functions on image')
