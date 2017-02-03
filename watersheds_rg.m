@@ -50,7 +50,7 @@ function labeled_image_band = watersheds_rg_band(image_band, varargin)
     h = shape(2); 
    
     ptr = libpointer('singlePtr',image_band);
-    label_ptr = libpointer('singlePtr',seeds_band');
+    label_ptr = libpointer('singlePtr',seeds_band);
     
     result = calllib('libvigra_c','vigra_watershedsregiongrowing_c', ptr, label_ptr, w,h, eight_connectivity, keep_contours, use_turbo, stop_cost);
     

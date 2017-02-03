@@ -22,7 +22,7 @@ function labeled_image = slic(image, seedDistance, intensityScaling, iterations)
 
 
     if( b == 3)
-        labeled_image = zeros(h,w,1,'single');
+        labeled_image = zeros(w,h,1,'single');
         labeled_image(:,:,1) = slic_rgb(image(:,:,1), image(:,:,2), image(:,:,3), seedDistance, intensityScaling, iterations);
     else
         labeled_image = zeros(w,h,b,'single');
@@ -80,9 +80,9 @@ function labeled_image_band = slic_rgb(image_band_r, image_band_g, image_band_b,
     w = shape(1);  
     h = shape(2); 
    
-    ptr_r = libpointer('singlePtr',image_band_r');
-    ptr_g = libpointer('singlePtr',image_band_g');
-    ptr_b = libpointer('singlePtr',image_band_b');
+    ptr_r = libpointer('singlePtr',image_band_r);
+    ptr_g = libpointer('singlePtr',image_band_g);
+    ptr_b = libpointer('singlePtr',image_band_b);
     
     labeled_image_band = zeros(w,h,'single');
     label_ptr = libpointer('singlePtr',labeled_image_band);
