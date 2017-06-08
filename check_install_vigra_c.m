@@ -1,5 +1,10 @@
 function result = check_install_vigra_c()
-    if( not(exist( dylib_path() ,'file')) )
+    try
+        if(~libisloaded('libvigra_c'))
+            loadlibrary(dylib_path());
+            unloadlibrary('libvigra_c');
+        end
+    catch
         result = build_vigra_c();
     end
     if (ispc())
