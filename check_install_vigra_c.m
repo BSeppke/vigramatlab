@@ -37,14 +37,6 @@ function path = dylib_path()
   path = [vigramatlab_path() , dylib_file()];
 end
 
-function flags = cmake_flags()
-    if( matlab_bits() == 32)
-        flags = '-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32';
-    else
-        flags = '-DCMAKE_BUILD_TYPE=Release';
-    end
-end
-
 function path = vigra_c_path()
     path = [vigramatlab_path() ,'vigra_c/'];
 end
@@ -125,7 +117,7 @@ function result = build_vigra_c()
         end
         if( vigra_installed() == 1)
             display ('-------------- BUILDING VIGRA-C-WRAPPER FOR COMPUTER VISION AND IMAGE PROCESSING TASKS --------------')
-            if( system(['cd ' , vigra_c_path() , '&& mkdir -p build && cd build && cmake ' , cmake_flags(), ' .. && make && cd .. && rm -rf ./build']) == 0)
+            if( system(['cd ' , vigra_c_path() , '&& ./build-' , matlab_bits(), '.sh']) == 0)
                 copyfile([vigra_c_path() , 'bin/' , dylib_file()], dylib_path(), 'f');
             else
                 error('making the vigra_c lib failed, although vigra seems to be installed')
