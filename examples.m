@@ -104,8 +104,8 @@ sep_x_kernel =  [ 1.0,  1.0, 1.0 ]/3.0;
 sep_y_kernel =  [ 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0 ]/9.0;
 
 img14 = convolveimage( img, gauss_kernel);
-img15 = convolveimage( img, mean_kernel);
-img16 = convolveimage( img, sep_x_kernel', sep_y_kernel');
+img15 = convolveimage( img, mean_kernel, 2); %BORDER_MODE REPEAT
+img16 = separableconvolveimage( img, sep_x_kernel', sep_y_kernel', 2); %BORDER_MODE REPEAT
 img17 = medianfilter( img, 3, 3);
 
 
