@@ -1,4 +1,6 @@
-function padded_image = paddimage(image, left, upper, right, lower)
+function padded_image = paddimage(image, left, upper, right, lower, value)
+    
+    narginchk(5, 6)
     
     shape = size(image);
     w = shape(1);  
@@ -9,19 +11,30 @@ function padded_image = paddimage(image, left, upper, right, lower)
         b = shape(3);
     end
     
+    if nargin < 6
+       value =zeros(b, 'single');
+    end
+    
+    
     new_width = right + w + left;
     new_height = lower + h + upper;
     
     padded_image = zeros(new_width,new_height,b,'single');
     
     for i=1:b
-        padded_image(:,:,i) = paddimage_band(image(:,:,i), left, upper, right, lower);
+        padded_image(:,:,i) = paddimage_band(image(:,:,i), left, upper, right, lower, value(i));
     end
     
 end
 
-function padded_band = paddimage_band(image_band, left, upper, right, lower)
-
+function padded_band = paddimage_band(image_band, left, upper, right, lower, value)
+    
+    narginchk(5, 6)
+    
+    if nargin < 6
+       value = 0.0;
+    end
+    
     shape = size(image_band);
     w = shape(1);  
     h = shape(2); 
@@ -34,7 +47,7 @@ function padded_band = paddimage_band(image_band, left, upper, right, lower)
     padded_band = zeros(new_width,new_height,'single');
     resized_ptr = libpointer('singlePtr',padded_band);
     
-    result = calllib('libvigra_c','vigra_paddimage_c', ptr, resized_ptr, w,h, left, upper, right, lower);
+    result = calllib('libvigra_c','vigra_paddimage_c', ptr, resized_ptr, w,h, left, upper, right, lower, value);
     
     switch result
         case 0

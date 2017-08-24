@@ -12,7 +12,7 @@ img = gaussiansmoothing(img, 0.3);
 toc
 
 display( 'testing image padding')
-img_padd = paddimage(img, 10, 20, 30, 40);
+img_padd = paddimage(img, 10, 20, 30, 40, [255.0 , 0.0 , 0.0]); %red border
 
 
 display( 'testing subimage and correlation facilities')
@@ -164,6 +164,7 @@ saveimage( img7 ,  'results/lenna-disttransform-on-canny.png');
 saveimage( img8 ,  'results/lenna-diff_of_exp.png');
 saveimage( img9 ,  'results/lenna-gsmooth-3.0.png');
 saveimage( img10,  'results/lenna-log-3.0.png');
+saveimage( img_padd,  'results/lenna-padded.png');
 saveimage( img11,  'results/lenna-gsharpening-0.5-3.0.png');
 saveimage( img12,  'results/lenna-sharpening-3.0.png');
 saveimage( img13,  'results/lenna-nonlineardiffusion-0.1-2.0.png');
