@@ -35,7 +35,7 @@ function padded_band = paddimage_band(image_band, left, upper, right, lower, val
        value = 0.0;
     end
     
-    image_band = value
+    image_band(:) = value;
     
     shape = size(image_band);
     w = shape(1);  
