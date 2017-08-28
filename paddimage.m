@@ -34,9 +34,7 @@ function padded_band = paddimage_band(image_band, left, upper, right, lower, val
     if nargin < 6
        value = 0.0;
     end
-    
-    image_band(:) = value;
-    
+        
     shape = size(image_band);
     w = shape(1);  
     h = shape(2); 
@@ -46,7 +44,7 @@ function padded_band = paddimage_band(image_band, left, upper, right, lower, val
    
     ptr = libpointer('singlePtr',image_band);
     
-    padded_band = zeros(new_width,new_height,'single');
+    padded_band = ones(new_width,new_height,'single')*value;
     resized_ptr = libpointer('singlePtr',padded_band);
     
     result = calllib('libvigra_c','vigra_paddimage_c', ptr, resized_ptr, w,h, left, upper, right, lower);
