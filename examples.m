@@ -81,7 +81,7 @@ img13 = nonlineardiffusion( img, 0.1, 2.0);
 [img_bt_xx, img_bt_xy, img_bt_yy]  = boundarytensor(img, 1.0);
 
 %Boundary tensor without 0 order parts
-[img_bt_xx, img_bt_xy, img_bt_yy]  = boundarytensor1(img, 1.0);
+[img_bt1_xx, img_bt1_xy, img_bt1_yy]  = boundarytensor1(img, 1.0);
 
 %Tensor to eigen repr.
 [maj_ew, min_ew, ew_angle] = tensoreigenrepresentation(img_st_xx, img_st_xy, img_st_yy);
@@ -90,7 +90,7 @@ img13 = nonlineardiffusion( img, 0.1, 2.0);
 img_bt_tt = tensortrace(img_bt_xx, img_bt_xy, img_bt_yy);
 
 %Tensor to edge corner
-[maj_ew, min_ew, ew_edgeness]  = tensortoedgecorner(img_st_xx, img_st_xy, img_st_yy);
+[edge_min_ew, edge_max_ew, ew_edgeness]  = tensortoedgecorner(img_st_xx, img_st_xy, img_st_yy);
 
 %Tensor to hourglass-filtered tensor
 [bt_hg_xx, bt_hg_xy, bt_hg_yy] = hourglassfilter(img_bt_xx, img_bt_xy, img_bt_yy, 1.0, 1.0);
@@ -172,3 +172,6 @@ saveimage( img14,  'results/lenna-gauss-convolve.png');
 saveimage( img15,  'results/lenna-mean-convolve.png');
 saveimage( img16,  'results/lenna-sep-convolve.png');
 saveimage( img17,  'results/lenna-median-3x3.png');
+
+saveimage(maj_ew, 'results/lenna-st_ec-rescaled.png');   %Uses rescaling from min...max to 0...255
+saveimage(maj_ew, 'results/lenna-st_ec-clipped.png', 0); %Use clipping to 0...255

@@ -1,4 +1,10 @@
-function result = saveimage( image, filename )
+function result = saveimage(image, filename, rescale_range)
+
+    narginchk(2, 3)
+    
+    if nargin < 3
+       rescale_range = 1;
+    end
 
 	result = 1;
     
@@ -15,7 +21,7 @@ function result = saveimage( image, filename )
     
     if( b == 1 )
         ptr = libpointer('singlePtr',image);
-        result = calllib('libvigra_c','vigra_exportgrayimage_c', ptr, w,h, filename);
+        result = calllib('libvigra_c','vigra_exportgrayimage_c', ptr, w,h, filename, rescale_range);
     elseif( b == 3 )
         img_r = image(:,:,1);
         img_g = image(:,:,2);
@@ -25,7 +31,7 @@ function result = saveimage( image, filename )
         g_ptr = libpointer('singlePtr',img_g);
         b_ptr = libpointer('singlePtr',img_b);
 
-        result = calllib('libvigra_c','vigra_exportrgbimage_c', r_ptr, g_ptr, b_ptr, w,h, filename);
+        result = calllib('libvigra_c','vigra_exportrgbimage_c', r_ptr, g_ptr, b_ptr, w,h, filename, rescale_range);
     elseif( b == 4 )
         img_r = image(:,:,1);
         img_g = image(:,:,2);
@@ -37,7 +43,7 @@ function result = saveimage( image, filename )
         b_ptr = libpointer('singlePtr',img_b);
         a_ptr = libpointer('singlePtr',img_a);
 
-        result = calllib('libvigra_c','vigra_exportrgbaimage_c', r_ptr, g_ptr, b_ptr, a_ptr, w,h, filename);
+        result = calllib('libvigra_c','vigra_exportrgbaimage_c', r_ptr, g_ptr, b_ptr, a_ptr, w,h, filename, rescale_range);
     else       
         error('vigramatlab.impex.saveimage: Image cannot be saved by vigra! Image numBands must be 1, 3 or 4')
     end
