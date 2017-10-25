@@ -44,8 +44,8 @@ img3 = fouriertransform(img_rect(:,:,4));
 img3ifft = fouriertransforminverse(img3);
 
 display( 'testing rotation and reflection functions on image')
-img4 = reflectimage( img, 3);
-img5 = rotateimage( img, 15.0, 3);
+img4 = reflectimage(img, 3);
+img5 = rotateimage(img, 15.0, 3);
 
 
 display( 'testing affine transformation on image')
@@ -56,23 +56,23 @@ rotmat = [[cos(theta), -1*sin(theta), 0];   [sin(theta), cos(theta)   , 0];  [ 0
 t1mat = [[1, 0, 0];   [0, 1, 0]; [-shape(1)/2.0, -shape(2)/2.0, 1]];
 t2mat = [[1, 0, 0];   [0, 1, 0]; [ shape(1)/2.0,  shape(2)/2.0, 1]];
 mat = t2mat * (rotmat * t1mat);
-img6 =  affinewarpimage( img , mat',  3);
+img6 =  clipimage(affinewarpimage(img , mat',  3), 0.0, 255.0);
 
 
 
 
 display( 'performing distance transform on canny edges of image')
-img7 = distancetransform(cannyedgeimage( img,  1.8,  0.1,  100.0),  0.0,  2);
+img7 = distancetransform(cannyedgeimage(img,  1.8,  0.1,  100.0),  0.0,  2);
 
 display( 'testing difference of exponential edge detection on image')
-img8 = differenceofexponentialedgeimage( img, 1.8, 0.5, 100.0);
+img8 = differenceofexponentialedgeimage(img, 1.8, 0.5, 100.0);
 
 display( 'testing nearly all filters')
-img9  = gaussiansmoothing( img, 3.0);
-img10 = laplacianofgaussian( img, 3.0);
-img11 = gaussiansharpening( img, 0.5, 3.0);
-img12 = simplesharpening( img, 3.0);
-img13 = nonlineardiffusion( img, 0.1, 2.0);
+img9  = gaussiansmoothing(img, 3.0);
+img10 = laplacianofgaussian(img, 3.0);
+img11 = gaussiansharpening(img, 0.5, 3.0);
+img12 = simplesharpening(img, 3.0);
+img13 = nonlineardiffusion(img, 0.1, 2.0);
 
 %Tensor tests
 [img_st_xx, img_st_xy, img_st_yy]  = structuretensor(img, 1.0, 4.0);
