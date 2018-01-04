@@ -108,6 +108,10 @@ img15 = convolveimage( img, mean_kernel, 2); %BORDER_MODE REPEAT
 img16 = separableconvolveimage( img, sep_x_kernel', sep_y_kernel', 2); %BORDER_MODE REPEAT
 img17 = medianfilter( img, 3, 3);
 
+img18 = nonlocalmean(img, 0);
+img19 = nonlocalmean(img, 1);
+
+
 
 display( 'testing the spline image view');
 siv = create_splineimageview(img,2);
@@ -172,6 +176,9 @@ saveimage( img14,  'results/lenna-gauss-convolve.png');
 saveimage( img15,  'results/lenna-mean-convolve.png');
 saveimage( img16,  'results/lenna-sep-convolve.png');
 saveimage( img17,  'results/lenna-median-3x3.png');
+
+saveimage( img18,  'results/lenna-nlm-policy0.png');
+saveimage( img19,  'results/lenna-nlm-policy1.png');
 
 saveimage(maj_ew, 'results/lenna-st_ec-rescaled.png');   %Uses rescaling from min...max to 0...255
 saveimage(maj_ew, 'results/lenna-st_ec-clipped.png', 0); %Use clipping to 0...255
